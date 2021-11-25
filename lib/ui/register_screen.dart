@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:laravel_api/auth/api_client.dart';
+import 'package:laravel_api/auth/store.dart';
 import 'package:laravel_api/models/message.dart';
 import 'package:laravel_api/models/user.dart';
 import 'package:laravel_api/ui/login_screen.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -12,6 +14,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final key = GlobalKey<FormState>();
+  String message = "";
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +56,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       "Please! Register New Account",
                       style: TextStyle(
                         fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Center(
+                    child: Text(
+                      "${message}",
+                      style: TextStyle(
+                        fontSize: 15,
                         color: Colors.white,
                       ),
                     ),
@@ -204,7 +219,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       print(user);
                                       Message msg =
                                           await ApiClient(Dio()).register(user);
-                                      print(msg.api);
+                                      //print(msg.api);
+                                      if (msg.api != "") {
+                                        Provider.of<Store>(context,
+                                                listen: false)
+                                            .setApi(msg.api);
+                                        setState(() {
+                                          message = msg.message;
+                                        });
+                                      }
                                     }
                                   },
                                   child: Text(

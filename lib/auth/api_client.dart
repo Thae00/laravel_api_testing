@@ -10,4 +10,7 @@ abstract class ApiClient {
 
   @POST("/user") //baseUrl/user
   Future<Message> register(@Body() User user);
+
+  @POST("/login")
+  Future<Message> login(@Body() User user);
 }

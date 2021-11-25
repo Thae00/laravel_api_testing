@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laravel_api/auth/login_status.dart';
+import 'package:laravel_api/auth/store.dart';
 import 'package:laravel_api/ui/login_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -7,6 +8,7 @@ void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => LoginStatus()),
+      ChangeNotifierProvider(create: (context) => Store()),
     ],
     child: MyApp(),
   ));

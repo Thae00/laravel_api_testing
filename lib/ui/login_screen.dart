@@ -1,5 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:laravel_api/auth/api_client.dart';
+import 'package:laravel_api/auth/login_status.dart';
+import 'package:laravel_api/auth/store.dart';
+import 'package:laravel_api/models/message.dart';
+import 'package:laravel_api/models/user.dart';
 import 'package:laravel_api/ui/register_screen.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -7,12 +14,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   final key = GlobalKey<FormState>();
-  
+  String message = "";
+
   @override
   Widget build(BuildContext context) {
-
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
@@ -53,7 +59,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.white,
                       ),
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Center(
+                    child: Text(
+                      "${message}",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -166,9 +184,29 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 50,
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 child: OutlinedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if (key.currentState!.validate()) {
-                                      print(emailController.text);
+                                      //print(emailController.text);
+                                      User user = User(
+                                          "Admin",
+                                          emailController.text,
+                                          passwordController.text);
+                                      Message msg =
+                                          await ApiClient(Dio()).login(user);
+                                      //print(msg.api);
+                                      if (msg.status) {
+                                        Provider.of<Store>(context,
+                                                listen: false)
+                                            .setApi(msg.api);
+                                        Provider.of<LoginStatus>(context,
+                                                listen: false)
+                                            .setStatus(true);
+                                      } else {
+                                        //print(msg.message);
+                                        setState(() {
+                                          this.message = msg.message;
+                                        });
+                                      }
                                     }
                                   },
                                   child: Text(
