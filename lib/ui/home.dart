@@ -15,25 +15,61 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     String api = Provider.of<Store>(context).getApi();
 
-    return SingleChildScrollView(
-      child: StreamBuilder<List<Post>>(
-        stream: ApiClient(Dio()).getAllPosts("Bearer ${api}"),
-        builder: (context, AsyncSnapshot<List<Post>> snapshots) {
-          return ListView.builder(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Home Page"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
+      body: SingleChildScrollView(
+        child: StreamBuilder<List<Post>>(
+          stream: ApiClient(Dio()).getAllPosts("Bearer ${api}"),
+          builder: (context, AsyncSnapshot<List<Post>> snapshots) {
+            return ListView.builder(
               shrinkWrap: true,
               itemCount: snapshots.data!.length,
               itemBuilder: (context, index) {
-                return Card(
-                  child: Row(
-                    children: [
-                      Container(
-                        child: Text("${snapshots.data![index].text}"),
-                      )
-                    ],
+                return Container(
+                  padding: EdgeInsets.all(20),
+                  child: Card(
+                    elevation: 5.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          height: 80,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "${snapshots.data![index].text}",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            TextButton(
+                              onPressed: () {},
+                              child: Icon(Icons.edit),
+                            ),
+                            TextButton(
+                              onPressed: () {},
+                              child: Icon(Icons.delete),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 );
-              });
-        },
+              },
+            );
+          },
+        ),
       ),
     );
   }
