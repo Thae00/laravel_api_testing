@@ -1,4 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:laravel_api/auth/api_client.dart';
+import 'package:laravel_api/models/message.dart';
+import 'package:laravel_api/models/user.dart';
 import 'package:laravel_api/ui/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -11,6 +15,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController nameController = TextEditingController();
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
@@ -96,7 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         ),
                                       ),
                                       child: TextFormField(
-                                        controller: emailController,
+                                        controller: nameController,
                                         validator: (val) {
                                           if (val == null || val.isEmpty) {
                                             return "Name Must Not Be Empty";
@@ -190,9 +195,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 height: 50,
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 child: OutlinedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if (key.currentState!.validate()) {
-                                      print(emailController.text);
+                                      User user = User(
+                                          nameController.text,
+                                          emailController.text,
+                                          passwordController.text);
+                                      print(user);
+                                      Message msg =
+                                          await ApiClient(Dio()).register(user);
+                                      print(msg.api);
                                     }
                                   },
                                   child: Text(
