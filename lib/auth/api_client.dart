@@ -1,4 +1,5 @@
 import 'package:laravel_api/models/message.dart';
+import 'package:laravel_api/models/post.dart';
 import 'package:laravel_api/models/user.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
@@ -13,4 +14,7 @@ abstract class ApiClient {
 
   @POST("/login")
   Future<Message> login(@Body() User user);
+
+  @GET("/posts")
+  Stream<List<Post>> getAllPosts(@Header("Authorization") String authApi); //call with Auth Api 
 }

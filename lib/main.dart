@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:laravel_api/auth/login_status.dart';
 import 'package:laravel_api/auth/store.dart';
+import 'package:laravel_api/ui/home.dart';
 import 'package:laravel_api/ui/login_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -37,11 +38,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     bool status = Provider.of<LoginStatus>(context).status;
 
-    return Scaffold(
-        body: (status)
-            ? Container(
-                child: Text("MinGaLarPar"),
-              )
-            : LoginScreen());
+    return Scaffold(body: (status) ? Home() : LoginScreen());
   }
 }
