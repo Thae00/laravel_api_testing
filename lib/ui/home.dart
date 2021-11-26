@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:laravel_api/auth/api_client.dart';
 import 'package:laravel_api/auth/store.dart';
+import 'package:laravel_api/main.dart';
+import 'package:laravel_api/models/message.dart';
 import 'package:laravel_api/models/post.dart';
 import 'package:laravel_api/ui/add_post.dart';
 import 'package:laravel_api/ui/edit_screen.dart';
@@ -68,7 +70,19 @@ class _HomeState extends State<Home> {
                               child: Icon(Icons.edit),
                             ),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                String api =
+                                    Provider.of<Store>(context, listen: false)
+                                        .getApi();
+                                Message msg = await ApiClient(Dio()).deletePost(
+                                    "Bearer ${api}", snapshots.data![index].id);
+                                if (msg.status == true) {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MyApp()));
+                                }
+                              },
                               child: Icon(Icons.delete),
                             ),
                           ],
