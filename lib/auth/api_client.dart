@@ -22,4 +22,7 @@ abstract class ApiClient {
   @POST("/post")
   Future<Message> createPost(
       @Header("Authorization") String authApi, @Body() Post post);
+
+  @GET("/post/{id}")
+  Future<Post> getPostById(@Header("Authorization") String authApi, @Path() int id);
 }

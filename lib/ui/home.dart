@@ -4,6 +4,7 @@ import 'package:laravel_api/auth/api_client.dart';
 import 'package:laravel_api/auth/store.dart';
 import 'package:laravel_api/models/post.dart';
 import 'package:laravel_api/ui/add_post.dart';
+import 'package:laravel_api/ui/edit_screen.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -56,7 +57,14 @@ class _HomeState extends State<Home> {
                         Row(
                           children: [
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          EditScreen(snapshots.data![index].id),
+                                    ));
+                              },
                               child: Icon(Icons.edit),
                             ),
                             TextButton(
