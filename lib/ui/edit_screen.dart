@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:laravel_api/auth/api_client.dart';
 import 'package:laravel_api/auth/store.dart';
+import 'package:laravel_api/main.dart';
 import 'package:laravel_api/models/message.dart';
 import 'package:laravel_api/models/post.dart';
-import 'package:laravel_api/ui/home.dart';
 import 'package:provider/provider.dart';
 
 class EditScreen extends StatefulWidget {
@@ -183,21 +183,21 @@ class _EditScreenState extends State<EditScreen> {
                                 child: TextButton(
                                   onPressed: () async {
                                     if (key.currentState!.validate()) {
+                                      Post post = Post(
+                                          widget.id,
+                                          editTitleController.text,
+                                          editDescontroller.text);
                                       String api = Provider.of<Store>(context,
                                               listen: false)
                                           .getApi();
-
-                                      Post post = Post(
-                                          0,
-                                          editTitleController.text,
-                                          editDescontroller.text);
                                       Message msg = await ApiClient(Dio())
-                                          .createPost("Bearer ${api}", post);
+                                          .editPost(
+                                              "Bearer ${api}", post, widget.id);
                                       if (msg.status == true) {
-                                        Navigator.push(
+                                        Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => Home()));
+                                                builder: (context) => MyApp()));
                                       }
                                     }
                                   },
