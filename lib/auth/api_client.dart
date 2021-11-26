@@ -16,5 +16,10 @@ abstract class ApiClient {
   Future<Message> login(@Body() User user);
 
   @GET("/posts")
-  Stream<List<Post>> getAllPosts(@Header("Authorization") String authApi); //call with Auth Api 
+  Stream<List<Post>> getAllPosts(
+      @Header("Authorization") String authApi); //call with Auth Api
+
+  @POST("/post")
+  Future<Message> createPost(
+      @Header("Authorization") String authApi, @Body() Post post);
 }

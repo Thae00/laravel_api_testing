@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:laravel_api/auth/api_client.dart';
 import 'package:laravel_api/auth/store.dart';
 import 'package:laravel_api/models/post.dart';
+import 'package:laravel_api/ui/add_post.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -20,7 +21,10 @@ class _HomeState extends State<Home> {
         title: Text("Home Page"),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => AddPost()));
+        },
         child: Icon(Icons.add),
       ),
       body: SingleChildScrollView(
@@ -32,7 +36,6 @@ class _HomeState extends State<Home> {
               itemCount: snapshots.data!.length,
               itemBuilder: (context, index) {
                 return Container(
-                  padding: EdgeInsets.all(20),
                   child: Card(
                     elevation: 5.0,
                     child: Row(
